@@ -22,3 +22,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+npm install -g @vue/cli
+npm install -g @vue/cli-service-global
