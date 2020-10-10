@@ -1,33 +1,6 @@
-# damasvue
+# damas-pygame
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-npm install -g @vue/cli
-
-npm install -g @vue/cli-service-global
-
-### Jogo de damas em Vue
+### Jogo de damas em Python
 Regras do jogo:
 - Peças andam somente nas diagonais, uma casa por vez.
 - Uma peça come a adversária se a próxima casa na diagonal em sentido de avanço ao campo do adversário estiver vazia, passando por cima do adversário.
