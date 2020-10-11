@@ -1,3 +1,7 @@
+import pygame
+import pygame_menu
+
+
 
 #Dimensões
 largura = 400
@@ -13,3 +17,10 @@ preto = (0, 0, 0)
 azul = (0, 0, 255)
 rosaClaro = (255, 204, 255)
 verdeClaro = (204, 255, 204)
+
+
+#Tema Menu
+tema = pygame_menu.themes.THEME_DEFAULT
+tema.cursor_color = (255, 100, 255)
+tema.title_font_size = 40
+tema.title_font = 'comicsansms'
