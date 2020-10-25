@@ -1,4 +1,5 @@
 import pygame
+import sqlite3
 
 from constantes import Cores
 
@@ -9,15 +10,16 @@ class Configurations:
              {"Red x Black": (Cores.vermelho, Cores.preto)},
              {"White x Blue": (Cores.branco, Cores.azul)},
              {"Green x Blue": (Cores.verdeClaro, Cores.azul)}]
-    indexResolucao = 0
-    indexCor = 0
-    corA, corB = cores[indexCor].get(list(cores[indexCor].keys())[0])
-    largura = altura = resolucao[indexResolucao]
+
     linhas = colunas = 8
-    quadrado = largura / 8
 
     def __init__(self):
-        pass
+        # adicionar sqlite pra salvar e recarregar configurações
+        self.indexResolucao = 0
+        self.indexCor = 0
+        self.corA, self.corB = self.cores[self.indexCor].get(list(self.cores[self.indexCor].keys())[0])
+        self.largura = self.altura = self.resolucao[self.indexResolucao]
+        self.quadrado = self.largura / 8
 
     def setResolucao(self, i):
         self.index = i
@@ -26,10 +28,10 @@ class Configurations:
         self.quadrado = self.largura / 8
         return self.largura, self.altura
 
-    def getResolucao(self, i=indexResolucao):
+    def getResolucao(self, i):
         return str(self.resolucao[i]) + " x " + str(self.resolucao[i])
 
-    def getCores(self, i=indexCor):
+    def getCores(self, i):
         k = list(self.cores[i].keys())[0]
         return k
 
