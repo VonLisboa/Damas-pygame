@@ -1,18 +1,21 @@
 import pygame
+from pygame_menu import Menu
+
 from MenuCustom import MenuCustom
 from Tabuleiro import Tabuleiro
 import pygame_menu
 from constantes import Cores
-from constantes import Configurations as conf
+from Configurations import Configurations
 from constantes import tema
 
+
 def main():
+    global conf
     running = True
     # clock = pygame.time.Clock()
 
     tab = Tabuleiro("meuTab")
-
-    tab.iniciarTabuleiro(gamedisplay)
+    tab.iniciarTabuleiro(gamedisplay, conf)
 
     pygame.display.update()
     while running:
@@ -29,6 +32,7 @@ def main():
 
 
 def sobreOJogo():
+    global gamedisplay
     running = True
     gamedisplay.fill(Cores.rosaClaro)
     pygame.font.init()
@@ -45,16 +49,32 @@ def sobreOJogo():
 
 pygame.init()
 
+conf = Configurations()
 gamedisplay = pygame.display.set_mode((conf.largura, conf.altura))
 pygame.display.set_caption("Jogo de Damas")
 
-menu = MenuCustom(conf.largura, conf.altura, 'Bem-vindo', theme=tema)
+main_menu = MenuCustom(conf.largura, conf.largura, 'Bem-vindo', theme=tema)
+main_menu.add_text_input('Name:', default='Lucas')
+main_menu.add_button('Play', main)
 
-menu.add_text_input('Name:', default='Lucas')
-menu.add_button('Play', main)
-menu.add_button('Configurações', sobreOJogo)
-menu.add_button('Sobre', sobreOJogo)
-menu.add_button('Quit', pygame_menu.events.EXIT)
-menu.add_image("jogo-damas.jpg", angle=10, scale=(0.15, 0.15))
+submenu = Menu(conf.largura, conf.largura, 'Configurações', theme=tema)
 
-menu.mainloop(gamedisplay)
+
+def submenu_cores(txt, i):
+    conf.setCorTabuleiro(i)
+
+
+def submenu_resolucao(txt, i):
+    global main_menu, submenu
+    largura, altura = conf.setResolucao(i)
+    main_menu.set_relative_position(largura * 0.075, largura * 0.075)
+    submenu.set_relative_position(largura * 0.075, largura * 0.075)
+
+
+submenu.add_selector("Resolução", conf.getResolucoes(), 0, onchange=submenu_resolucao)
+submenu.add_selector("Cor do Tabuleiro", conf.getCoresTabulerio(), 0, onchange=submenu_cores)
+main_menu.add_button('Configurações', submenu)
+main_menu.add_button('Sobre', sobreOJogo)
+main_menu.add_button('Quit', pygame_menu.events.EXIT)
+main_menu.add_image("jogo-damas.jpg", angle=10, scale=(0.15, 0.15))
+main_menu.mainloop(gamedisplay)
