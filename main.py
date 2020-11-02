@@ -1,38 +1,40 @@
 import pygame
-import pygame_menu
+from pygame_menu import Menu
+
 from MenuCustom import MenuCustom
-
-from constantes import *
-
 from Tabuleiro import Tabuleiro
+import pygame_menu
+from constantes import Cores
+from Configurations import Configurations
+from constantes import tema
+
 
 def main():
-
-
+    global conf
     running = True
-    #clock = pygame.time.Clock()
+    # clock = pygame.time.Clock()
 
     tab = Tabuleiro("meuTab")
-
-    tab.iniciarTabuleiro(gamedisplay)
+    tab.iniciarTabuleiro(gamedisplay, conf)
 
     pygame.display.update()
     while running:
-        #clock.tick(10)
+        # clock.tick(10)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-            #if event.type == pygame.MOUSEBUTTONDOWN:
-               # pass
-
+            # if event.type == pygame.MOUSEBUTTONDOWN:
+            # pass
 
     pygame.quit()
 
+
 def sobreOJogo():
+    global gamedisplay
     running = True
-    gamedisplay.fill(rosaClaro)
+    gamedisplay.fill(Cores.rosaClaro)
     pygame.font.init()
     myfont = pygame.font.SysFont('Comic Sans MS', 30)
     textsurface = myfont.render('Trabalho sobre a materia ES2', False, (0, 0, 0))
@@ -45,19 +47,34 @@ def sobreOJogo():
                 running = False
 
 
-
 pygame.init()
 
-gamedisplay = pygame.display.set_mode((largura, altura))
+conf = Configurations()
+gamedisplay = pygame.display.set_mode((conf.largura, conf.altura))
 pygame.display.set_caption("Jogo de Damas")
 
-menu = pygame_menu.Menu(400,400, 'Bem-vindo', theme = tema)
-#menu = MenuCustom(400,400, 'Bem-vindo', theme = tema)
+main_menu = MenuCustom(conf.largura, conf.largura, 'Bem-vindo', theme=tema)
+main_menu.add_text_input('Name:', default='Lucas')
+main_menu.add_button('Play', main)
 
-menu.add_text_input('Name:', default = 'Lucas')
-menu.add_button('Play', main)
-menu.add_button('Sobre', sobreOJogo)
-menu.add_button('Quit', pygame_menu.events.EXIT)
-menu.add_image("jogo-damas.jpg", angle=10, scale=(0.15, 0.15))
+submenu = Menu(conf.largura, conf.largura, 'Configurações', theme=tema)
 
-menu.mainloop(gamedisplay)
+
+def submenu_cores(txt, i):
+    conf.setCorTabuleiro(i)
+
+
+def submenu_resolucao(txt, i):
+    global main_menu, submenu
+    largura, altura = conf.setResolucao(i)
+    main_menu.set_relative_position(largura * 0.075, largura * 0.075)
+    submenu.set_relative_position(largura * 0.075, largura * 0.075)
+
+
+submenu.add_selector("Resolução", conf.getResolucoes(), 0, onchange=submenu_resolucao)
+submenu.add_selector("Cor do Tabuleiro", conf.getCoresTabulerio(), 0, onchange=submenu_cores)
+main_menu.add_button('Configurações', submenu)
+main_menu.add_button('Sobre', sobreOJogo)
+main_menu.add_button('Quit', pygame_menu.events.EXIT)
+main_menu.add_image("jogo-damas.jpg", angle=10, scale=(0.15, 0.15))
+main_menu.mainloop(gamedisplay)
