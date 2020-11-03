@@ -28,7 +28,7 @@ class Configurations:
         self.quadrado = self.largura / 8
         return self.largura, self.altura
 
-    def getResolucao(self, i):
+    def getResolucaoString(self, i):
         return str(self.resolucao[i]) + " x " + str(self.resolucao[i])
 
     def getCores(self, i):
@@ -38,7 +38,7 @@ class Configurations:
     def getResolucoes(self):
         l = []
         for i in range(0, len(self.resolucao)):
-            l.append((self.getResolucao(i), i))
+            l.append((self.getResolucaoString(i), i))
         return l
 
     def getCoresTabulerio(self):
@@ -50,3 +50,6 @@ class Configurations:
     def setCorTabuleiro(self, i):
         self.indexCor = i
         self.corA, self.corB = self.cores[i].get(list(self.cores[i].keys())[0])
+
+    def getResolucaoSelecionada(self):
+        return self.altura

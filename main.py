@@ -15,7 +15,8 @@ def main():
     # clock = pygame.time.Clock()
 
     tab = Tabuleiro("meuTab")
-    tab.iniciarTabuleiro(gamedisplay, conf)
+    #tab.iniciarTabuleiro(gamedisplay, conf)
+    tab.desenharPecas(gamedisplay, conf)
 
     pygame.display.update()
     while running:
