@@ -1,32 +1,46 @@
 import pygame
 from pygame_menu import Menu
 
+from Jogo import Jogo
 from MenuCustom import MenuCustom
-from Tabuleiro import Tabuleiro
 import pygame_menu
 from constantes import Cores
 from Configurations import Configurations
 from constantes import tema
 
 
+def getMouseCoordenadas(tamQuadrado):
+    x, y = pygame.mouse.get_pos()
+    lin = y // tamQuadrado
+    col = x // tamQuadrado
+    return int(lin), int(col)
+
+
 def main():
     global conf
-    running = True
-    # clock = pygame.time.Clock()
+    global gamedisplay
 
-    tab = Tabuleiro("meuTab")
-    tab.iniciarTabuleiro(gamedisplay, conf)
+    running = True
+    clock = pygame.time.Clock()
+    jogo = Jogo(gamedisplay, conf)
 
     pygame.display.update()
     while running:
-        # clock.tick(10)
+        clock.tick(10)
+        if jogo.ganhador() is not None:
+            print(jogo.ganhador())
+            running = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-            # if event.type == pygame.MOUSEBUTTONDOWN:
-            # pass
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                lin, col = getMouseCoordenadas(conf.getTamanhoQuadrado())
+                jogo.seleciona(lin, col)
+
+        jogo.update()
+        pygame.display.update()
 
     pygame.quit()
 

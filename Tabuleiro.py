@@ -1,15 +1,162 @@
 import pygame
 
+from Peca import Peca
+from constantes import Cores
+
+
 class Tabuleiro:
 
-    def __init__(self, n):
+    def __init__(self, n, conf):
+        self.conf = conf
         self.peca = None
         self.nome = n
+        self.tabuleiro = []
+        self.jogadorA = self.jogadorB = 12
+        self.jogadorARei = self.jogadorBRei = 0
 
-    def iniciarTabuleiro(self, interface, conf):
+    def desenharTabuleiro(self, interface):
+        interface.fill(self.conf.corA)
 
-        interface.fill(conf.corA)
+        for col in range(self.conf.colunas):
+            for lin in range(col % 2, self.conf.linhas, 2):
+                pygame.draw.rect(interface, self.conf.corB,
+                                 (col * self.conf.quadrado, lin * self.conf.quadrado, self.conf.quadrado, self.conf.quadrado))
 
-        for col in range(conf.colunas):
-            for lin in range(col % 2, conf.linhas, 2):
-                pygame.draw.rect(interface, conf.corB, (col * conf.quadrado, lin * conf.quadrado, conf.quadrado, conf.quadrado))
+    def posicionarPeca(self):
+        for lin in range(self.conf.linhas):
+            self.tabuleiro.append([])
+            for col in range(self.conf.colunas):
+                if col % 2 == (lin + 1) % 2:
+                    if lin < 3:
+                        self.tabuleiro[lin].append(Peca(lin, col, Cores.vermelho, self.conf.getTamanhoQuadrado()))
+                    elif lin > 4:
+                        self.tabuleiro[lin].append(Peca(lin, col, Cores.azul, self.conf.getTamanhoQuadrado()))
+                    else:
+                        self.tabuleiro[lin].append(0)
+                else:
+                    self.tabuleiro[lin].append(0)
+
+    def desenharPecas(self, interface):
+        self.desenharTabuleiro(interface)
+        self.posicionarPeca()
+        for lin in range(self.conf.linhas):
+            for col in range(self.conf.colunas):
+                peca = self.tabuleiro[lin][col]
+
+                if peca != 0:
+                    peca.definirPosicao()
+                    peca.iniciarPeca(interface)
+
+    def movimentar(self, peca, lin, col):
+        self.tabuleiro[peca.lin][peca.col], self.tabuleiro[lin][col] = self.tabuleiro[lin][col], self.tabuleiro[peca.lin][peca.col]
+        peca.mover(lin, col)
+
+        if lin == self.conf.linhas - 1 or lin == 0:
+            peca.setRei()
+            if peca.cor == Cores.vermelho:
+                self.jogadorBRei += 1
+            else:
+                self.jogadorARei += 1
+
+    def getPeca(self, lin, col):
+        return self.tabuleiro[lin][col]
+
+    def remover(self, pecas):
+        for p in pecas:
+            self.tabuleiro[p.lin][p.col] = 0
+            if p != 0:
+                if p.cor == Cores.azul:
+                    self.jogadorA -= 1
+                else:
+                    self.jogadorB -= 1
+
+    def ganhador(self):
+        if self.jogadorA <= 0:
+            return Cores.vermelho
+        elif self.jogadorB <= 0:
+            return Cores.azul
+
+        return None
+
+    def getMovimentosValidos(self, peca):
+        movimentos = {}
+        esquerda = peca.col - 1
+        direita = peca.col + 1
+        linha = peca.lin
+
+        if peca.cor == Cores.vermelho or peca.rei:
+            movimentos.update(self._diagonalEsquerda(linha + 1, min(linha + 3, self.conf.linhas), 1, peca.cor, esquerda))
+            movimentos.update(self._diagonalDireita(linha + 1, min(linha + 3, self.conf.linhas), 1, peca.cor, direita))
+
+        if peca.cor == Cores.azul or peca.rei:
+            movimentos.update(self._diagonalEsquerda(linha - 1, max(linha - 3, -1), -1, peca.cor, esquerda))
+            movimentos.update(self._diagonalDireita(linha - 1, max(linha - 3, -1), -1, peca.cor, direita))
+
+
+        return movimentos
+
+    def _diagonalEsquerda(self, inicio, final, passo, cor, esquerda, capturados=[]):
+        movimentos = {}
+        ultimo = []
+        for r in range(inicio, final, passo):
+            if esquerda < 0:
+                break
+
+            atual = self.tabuleiro[r][esquerda]
+            if atual == 0:
+                if capturados and not ultimo:
+                    break
+                elif capturados:
+                    movimentos[(r, esquerda)] = ultimo + capturados
+                else:
+                    movimentos[(r, esquerda)] = ultimo
+
+                if ultimo:
+                    if passo == -1:
+                        lin = max(r - 3, 0)
+                    else:
+                        lin = min(r + 3, self.conf.linhas)
+                    movimentos.update(self._diagonalEsquerda(r + passo, lin, passo, cor, esquerda - 1, capturados=ultimo))
+                    movimentos.update(self._diagonalDireita(r + passo, lin, passo, cor, esquerda + 1, capturados=ultimo))
+                break
+            elif atual.cor == cor:
+                break
+            else:
+                ultimo = [atual]
+
+            esquerda -= 1
+
+        return movimentos
+
+    def _diagonalDireita(self, inicio, final, passo, cor, direita, capturados=[]):
+        movimentos = {}
+        ultimo = []
+        for r in range(inicio, final, passo):
+            if direita >= self.conf.colunas:
+                break
+
+            atual = self.tabuleiro[r][direita]
+            if atual == 0:
+                if capturados and not ultimo:
+                    break
+                elif capturados:
+                    movimentos[(r, direita)] = ultimo + capturados
+                else:
+                    movimentos[(r, direita)] = ultimo
+
+                if ultimo:
+                    if passo == -1:
+                        lin = max(r - 3, 0)
+                    else:
+                        lin = min(r + 3, self.conf.linhas)
+                    movimentos.update(self._diagonalEsquerda(r + passo, lin, passo, cor, direita - 1, capturados=ultimo))
+                    movimentos.update(self._diagonalDireita(r + passo, lin, passo, cor, direita + 1, capturados=ultimo))
+                break
+            elif atual.cor == cor:
+                break
+            else:
+                ultimo = [atual]
+
+            direita += 1
+
+        return movimentos
