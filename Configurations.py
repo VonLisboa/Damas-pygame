@@ -53,3 +53,6 @@ class Configurations:
 
     def getResolucaoSelecionada(self):
         return self.altura
+
+    def getTamanhoQuadrado(self):
+        return self.quadrado
