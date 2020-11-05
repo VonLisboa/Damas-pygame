@@ -1,12 +1,19 @@
 import pygame
 from pygame_menu import Menu
-
+from Jogo import Jogo
 from MenuCustom import MenuCustom
 from Tabuleiro import Tabuleiro
 import pygame_menu
 from constantes import Cores
 from Configurations import Configurations
 from constantes import tema
+
+
+def getPosicao(pos):
+    x, y = pos
+    lin = y // pos
+    col = x // pos
+    return int(lin), int(col)
 
 
 def main():
@@ -19,12 +26,19 @@ def main():
     tab.desenharPecas(gamedisplay, conf)
 
     pygame.display.update()
+
+    jogo = Jogo()
     while running:
         # clock.tick(10)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                lin, col = getPosicao(conf.getQuadrado())
+                jogo.selecionaPeca(lin, col)
 
             # if event.type == pygame.MOUSEBUTTONDOWN:
             # pass

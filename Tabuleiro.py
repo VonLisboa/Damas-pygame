@@ -7,8 +7,7 @@ from Configurations import Configurations
 
 class Tabuleiro:
 
-
-    def __init__(self, n):
+    def __init__(self, n=None):
         self.peca = None
         self.nome = n
         self.tabuleiro = []
@@ -52,3 +51,7 @@ class Tabuleiro:
                     quadradoTam = conf.getResolucaoSelecionada()/8
                     peca.definirPosicao(quadradoTam)
                     peca.iniciarPeca(interface, quadradoTam)
+
+    def getPeca(self, lin, col):
+        return self.tabuleiro[lin][col]
+
