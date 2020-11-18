@@ -1,7 +1,6 @@
 import pygame
 
 from Peca import Peca
-from constantes import Cores
 
 
 class Tabuleiro:
