@@ -14,7 +14,7 @@ class Jogo:
         self.selecionado = None
         self.tabuleiro = Tabuleiro("meuTab", self.conf)
         self.tabuleiro.desenharTabuleiro(self.display)
-        self.vez = Cores.azul
+        self.vez = self.conf.corPB
         self.movimentosValidos = {}
 
     def update(self):
@@ -62,7 +62,7 @@ class Jogo:
 
     def mudarVez(self):
         self.movimentosValidos = {}
-        if self.vez == Cores.azul:
-            self.vez = Cores.vermelho
+        if self.vez == self.conf.corPB:
+            self.vez = self.conf.corPA
         else:
-            self.vez = Cores.azul
+            self.vez = self.conf.corPB

@@ -18,26 +18,26 @@ class peca_test(unittest.TestCase):
         lin = 0
         col = 0
         p = Peca(lin, col, Cores.amareloClaro, tamQuadrado)
-        p.definirPosicao()
+        p.converterPosicao()
         self.assertEqual((p.x, p.y), (50, 50))
 
         lin = 0
         col = 1 # soma 100 no X para a coluna 1 e assim sucessivamente
         p = Peca(lin, col, Cores.amareloClaro, tamQuadrado)
-        p.definirPosicao()
+        p.converterPosicao()
         self.assertEqual((p.x, p.y), (150, 50))
 
         lin = 0
         col = 2  # soma 200
         p = Peca(lin, col, Cores.amareloClaro, tamQuadrado)
-        p.definirPosicao()
+        p.converterPosicao()
         self.assertEqual((p.x, p.y), (250, 50))
 
         #para a linha segue a mesma lógica ocorrendo no Y
         lin = 1
         col = 2  # soma 200
         p = Peca(lin, col, Cores.amareloClaro, tamQuadrado)
-        p.definirPosicao()
+        p.converterPosicao()
         self.assertEqual((p.x, p.y), (250, 150))
 
     def test_mover_e_calcular(self):

@@ -16,7 +16,6 @@ class Tabuleiro:
 
     def desenharTabuleiro(self, interface):
         interface.fill(self.conf.corA)
-
         for col in range(self.conf.colunas):
             for lin in range(col % 2, self.conf.linhas, 2):
                 pygame.draw.rect(interface, self.conf.corB,
@@ -28,9 +27,9 @@ class Tabuleiro:
             for col in range(self.conf.colunas):
                 if col % 2 == (lin + 1) % 2:
                     if lin < 3:
-                        self.tabuleiro[lin].append(Peca(lin, col, Cores.vermelho, self.conf.getTamanhoQuadrado()))
+                        self.tabuleiro[lin].append(Peca(lin, col, self.conf.corPA, self.conf.getTamanhoQuadrado()))
                     elif lin > 4:
-                        self.tabuleiro[lin].append(Peca(lin, col, Cores.azul, self.conf.getTamanhoQuadrado()))
+                        self.tabuleiro[lin].append(Peca(lin, col, self.conf.corPB, self.conf.getTamanhoQuadrado()))
                     else:
                         self.tabuleiro[lin].append(0)
                 else:
@@ -42,9 +41,8 @@ class Tabuleiro:
         for lin in range(self.conf.linhas):
             for col in range(self.conf.colunas):
                 peca = self.tabuleiro[lin][col]
-
                 if peca != 0:
-                    peca.definirPosicao()
+                    peca.converterPosicao()
                     peca.iniciarPeca(interface)
 
     def movimentar(self, peca, lin, col):
@@ -53,7 +51,7 @@ class Tabuleiro:
 
         if lin == self.conf.linhas - 1 or lin == 0:
             peca.setRei()
-            if peca.cor == Cores.vermelho:
+            if peca.cor == self.conf.corPA:
                 self.jogadorBRei += 1
             else:
                 self.jogadorARei += 1
@@ -65,16 +63,16 @@ class Tabuleiro:
         for p in pecas:
             self.tabuleiro[p.lin][p.col] = 0
             if p != 0:
-                if p.cor == Cores.azul:
+                if p.cor == self.conf.corPB:
                     self.jogadorA -= 1
                 else:
                     self.jogadorB -= 1
 
     def ganhador(self):
         if self.jogadorA <= 0:
-            return Cores.vermelho
+            return self.conf.corPA
         elif self.jogadorB <= 0:
-            return Cores.azul
+            return self.conf.corPB
 
         return None
 
@@ -84,11 +82,11 @@ class Tabuleiro:
         direita = peca.col + 1
         linha = peca.lin
 
-        if peca.cor == Cores.vermelho or peca.rei:
+        if peca.cor == self.conf.corPA or peca.rei:
             movimentos.update(self._diagonalEsquerda(linha + 1, min(linha + 3, self.conf.linhas), 1, peca.cor, esquerda))
             movimentos.update(self._diagonalDireita(linha + 1, min(linha + 3, self.conf.linhas), 1, peca.cor, direita))
 
-        if peca.cor == Cores.azul or peca.rei:
+        if peca.cor == self.conf.corPB or peca.rei:
             movimentos.update(self._diagonalEsquerda(linha - 1, max(linha - 3, -1), -1, peca.cor, esquerda))
             movimentos.update(self._diagonalDireita(linha - 1, max(linha - 3, -1), -1, peca.cor, direita))
 
@@ -125,7 +123,6 @@ class Tabuleiro:
                 ultimo = [atual]
 
             esquerda -= 1
-
         return movimentos
 
     def _diagonalDireita(self, inicio, final, passo, cor, direita, capturados=[]):
@@ -158,5 +155,4 @@ class Tabuleiro:
                 ultimo = [atual]
 
             direita += 1
-
         return movimentos

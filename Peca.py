@@ -17,7 +17,7 @@ class Peca:
         self.tamQuadrado = tamQuadrado
         self.calcular()
 
-    def definirPosicao(self):
+    def converterPosicao(self):
         self.x = int(self.tamQuadrado * self.col + self.tamQuadrado / 2)
         self.y = int(self.tamQuadrado * self.lin + self.tamQuadrado / 2)
 
