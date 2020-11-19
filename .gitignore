@@ -17,6 +17,7 @@ pnpm-debug.log*
 .idea
 .vscode
 *.db
+*.json
 *.suo
 *.ntvs*
 *.njsproj
