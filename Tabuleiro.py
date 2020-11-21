@@ -42,7 +42,7 @@ class Tabuleiro:
                 peca = self.tabuleiro[lin][col]
                 if peca != 0:
                     peca.converterPosicao()
-                    peca.iniciarPeca(interface)
+                    peca.desenhar(interface)
 
     def movimentar(self, peca, lin, col):
         self.tabuleiro[peca.lin][peca.col], self.tabuleiro[lin][col] = self.tabuleiro[lin][col], self.tabuleiro[peca.lin][peca.col]

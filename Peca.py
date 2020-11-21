@@ -5,7 +5,7 @@ from constantes import Cores
 
 class Peca:
     PADDING = 15
-    OUTLINE = 5
+    OUTLINE = 3
 
     def __init__(self, lin, col, cor, tamQuadrado):
         self.lin = lin
@@ -21,10 +21,11 @@ class Peca:
         self.x = int(self.tamQuadrado * self.col + self.tamQuadrado / 2)
         self.y = int(self.tamQuadrado * self.lin + self.tamQuadrado / 2)
 
-    def iniciarPeca(self, interface):
+    def desenhar(self, interface):
         margem = 10
         pecaTam = int(self.tamQuadrado/2 - margem)
         pygame.draw.circle(interface, self.cor, (self.x, self.y), pecaTam)
+        self.__desenha_coroa(interface)
 
     def setRei(self):
         self.rei = True
@@ -38,11 +39,9 @@ class Peca:
         self.x = self.tamQuadrado * self.col + self.tamQuadrado // 2
         self.y = self.tamQuadrado * self.lin + self.tamQuadrado // 2
 
-    def desenhar(self, display):
-        # rainha = pygame.transform.scale(pygame.image.load('assets/crown.png'), (44, 25))
-        radius = self.tamQuadrado // 2 - self.PADDING
-        pygame.draw.circle(display, Cores.cinza, (self.x, self.y), radius + self.OUTLINE)
-        pygame.draw.circle(display, self.cor, (self.x, self.y), radius)
+    def __desenha_coroa(self, display):
         if self.rei:
-            pygame.draw.circle(display, Cores.amarelo, (self.x, self.y), radius/2)
-            #display.blit(rainha, (self.x - rainha.get_width() // 2, self.y - rainha.get_height() // 2))
+            radius = self.tamQuadrado // 2 - self.PADDING
+            pygame.draw.circle(display, Cores.amarelo, (self.x, self.y), radius + self.OUTLINE)
+            pygame.draw.circle(display, self.cor, (self.x, self.y), radius)
+            pygame.draw.circle(display, Cores.amarelo, (self.x, self.y), radius/3)
