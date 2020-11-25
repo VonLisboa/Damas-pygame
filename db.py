@@ -11,14 +11,17 @@ class DataBase:
                 self.data = json.load(json_file)
 
     def __create(self):
-        self.data = {"resolucao": 0, "corTabuleiro": 0}
+        self.data = {"resolucao": 0, "corPeca": 0, "corTabuleiro": 0}
         self.__save()
 
     def load_configurations(self):
-        return self.data["corTabuleiro"], self.data["resolucao"]
+        return self.data["corTabuleiro"], self.data["corPeca"], self.data["resolucao"]
 
-    def load_cor(self):
+    def load_cor_tabuleiro(self):
         return self.data["corTabuleiro"]
+
+    def load_cor_peca(self):
+        return self.data["corPeca"]
 
     def load_resolucao(self):
         return self.data["resolucao"]
@@ -31,6 +34,11 @@ class DataBase:
         self.data["resolucao"] = val
         self.__save()
 
+    def update_cor_peca(self, val):
+        self.data["corPeca"] = val
+        self.__save()
+
     def __save(self):
         with open('jogoDamas.json', 'w') as outfile:
             json.dump(self.data, outfile)
+

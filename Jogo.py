@@ -14,12 +14,12 @@ class Jogo:
         self.selecionado = None
         self.tabuleiro = Tabuleiro("meuTab", self.conf)
         self.tabuleiro.desenharTabuleiro(self.display)
-        self.vez = Cores.azul
+        self.vez = self.conf.corPB
         self.movimentosValidos = {}
 
     def update(self):
         self.tabuleiro.desenharPecas(self.display)
-        self.desenhaMovimentosValidos(self.movimentosValidos)
+        self.desenhaMovimentosValidos()
 
     def ganhador(self):
         return self.tabuleiro.ganhador()
@@ -53,16 +53,20 @@ class Jogo:
             return False
         return True
 
-    def desenhaMovimentosValidos(self, movimentos):
+    def desenhaMovimentosValidos(self):
         tam = self.conf.getTamanhoQuadrado()
-        for m in movimentos:
+        for m in self.movimentosValidos:
             lin, col = m
             pygame.draw.rect(self.display, Cores.amareloClaro,
                              (col * tam-7 + tam // 8,lin * tam-7 + tam // 8, tam, tam))
 
     def mudarVez(self):
         self.movimentosValidos = {}
-        if self.vez == Cores.azul:
-            self.vez = Cores.vermelho
+        if self.vez == self.conf.corPB:
+            self.vez = self.conf.corPA
         else:
-            self.vez = Cores.azul
+            self.vez = self.conf.corPB
+
+    def bot_movimentou(self, tabuleiro):
+        self.tabuleiro = tabuleiro
+        self.mudarVez()
