@@ -66,3 +66,7 @@ class Jogo:
             self.vez = self.conf.corPA
         else:
             self.vez = self.conf.corPB
+
+    def bot_movimentou(self, tabuleiro):
+        self.tabuleiro = tabuleiro
+        self.mudarVez()
