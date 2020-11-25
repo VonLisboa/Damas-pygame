@@ -1,6 +1,7 @@
 import pygame
 from pygame_menu import Menu
 
+from Bot import *
 from Jogo import Jogo
 from MenuCustom import MenuCustom
 import pygame_menu
@@ -16,6 +17,8 @@ def getMouseCoordenadas(tamQuadrado):
     return int(lin), int(col)
 
 
+
+
 def main():
     global conf
     global gamedisplay
@@ -27,6 +30,11 @@ def main():
     pygame.display.update()
     while running:
         clock.tick(10)
+
+        if jogo.vez == conf.corPA:
+            novo_tabuleiro = bot_joga(jogo.tabuleiro, jogo, conf)
+            # jogo.bot_movimentou(novo_tabuleiro)
+
         if jogo.ganhador() is not None:
             print(jogo.ganhador())
             running = False
