@@ -42,6 +42,6 @@ class Peca:
     def __desenha_coroa(self, display):
         if self.rei:
             radius = self.tamQuadrado // 2 - self.PADDING
-            pygame.draw.circle(display, Cores.amarelo, (self.x, self.y), radius + self.OUTLINE)
+            pygame.draw.circle(display, Cores.branco, (self.x, self.y), radius + self.OUTLINE)
             pygame.draw.circle(display, self.cor, (self.x, self.y), radius)
-            pygame.draw.circle(display, Cores.amarelo, (self.x, self.y), radius/3)
+            pygame.draw.circle(display, Cores.branco, (self.x, self.y), radius/3)
