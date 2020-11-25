@@ -19,7 +19,7 @@ class Jogo:
 
     def update(self):
         self.tabuleiro.desenharPecas(self.display)
-        self.desenhaMovimentosValidos(self.movimentosValidos)
+        self.desenhaMovimentosValidos()
 
     def ganhador(self):
         return self.tabuleiro.ganhador()
@@ -53,9 +53,9 @@ class Jogo:
             return False
         return True
 
-    def desenhaMovimentosValidos(self, movimentos):
+    def desenhaMovimentosValidos(self):
         tam = self.conf.getTamanhoQuadrado()
-        for m in movimentos:
+        for m in self.movimentosValidos:
             lin, col = m
             pygame.draw.rect(self.display, Cores.amareloClaro,
                              (col * tam-7 + tam // 8,lin * tam-7 + tam // 8, tam, tam))

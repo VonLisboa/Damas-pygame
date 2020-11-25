@@ -22,3 +22,6 @@ class jogo_test(unittest.TestCase):
         self.assertEqual(jogo.vez, conf.corPB)
         jogo.mudarVez()
         self.assertEqual(jogo.vez, conf.corPA)
+
+    def test_seleciona_mover(self):
+        pass
