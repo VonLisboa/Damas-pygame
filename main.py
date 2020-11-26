@@ -86,6 +86,10 @@ def submenu_cores(txt, i):
     conf.setCorTabuleiro(i)
 
 
+def submenu_cores_peca(txt, i):
+    conf.setCorPeca(i)
+
+
 def submenu_resolucao(txt, i):
     global main_menu, submenu
     largura, altura = conf.setResolucao(i)
@@ -95,6 +99,7 @@ def submenu_resolucao(txt, i):
 
 submenu.add_selector("Resolução", conf.getResolucoes(), 0, onchange=submenu_resolucao)
 submenu.add_selector("Cor do Tabuleiro", conf.getCoresTabulerio(), 0, onchange=submenu_cores)
+submenu.add_selector("Cor da Peça", conf.getCoresPeca(), 0, onchange=submenu_cores_peca)
 main_menu.add_button('Configurações', submenu)
 main_menu.add_button('Sobre', sobreOJogo)
 main_menu.add_button('Quit', pygame_menu.events.EXIT)
