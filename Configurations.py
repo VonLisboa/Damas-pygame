@@ -13,9 +13,9 @@ class Configurations:
              {"Green x Blue": (Cores.verde, Cores.azul)}]
 
     coresPeca = [{"Azul x Vermelho": (Cores.azul, Cores.vermelho)},
-             {"Red x Black": (Cores.amarelo, Cores.azul)},
-             {"White x Blue": (Cores.verdeClaro, Cores.amarelo)},
-             {"Green x Blue": (Cores.amarelo, Cores.cinza)}]
+             {"Red x Black": (Cores.vermelho, Cores.preto)},
+             {"Amarelo x Blue": (Cores.amarelo, Cores.azul)},
+             {"Green x Blue": (Cores.verde, Cores.azul)}]
 
     linhas = colunas = 8
 
